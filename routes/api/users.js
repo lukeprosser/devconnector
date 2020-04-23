@@ -4,12 +4,14 @@ const express = require('express');
 const router = express.Router();
 const gravatar = require('gravatar');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 const { check, validationResult } = require('express-validator');
 
 // Access user model
 const User = require('../../models/User');
 
-// @route   POST ap/users
+// @route   POST api/users
 // @desc    Register user
 // @access  Public
 router.post(
@@ -65,8 +67,21 @@ router.post(
       await user.save();
 
       // Return JWT
+      const payload = {
+        user: {
+          id: user.id, // Mongoose uses abstraction for ._id
+        },
+      };
 
-      res.send('User registered');
+      jwt.sign(
+        payload,
+        config.get('jwtSecret'),
+        { expiresIn: 360000 }, // Reset to 3600 (24hrs) for production
+        (err, token) => {
+          if (err) throw err;
+          res.json({ token });
+        }
+      );
     } catch (err) {
       console.error(err.message);
       res.status(500).send('Server error');
