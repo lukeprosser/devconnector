@@ -1,6 +1,0 @@
-{
-  "mongoURI": "mongodb+srv://luke123:luke123@devconnector-txcha.mongodb.net/test?retryWrites=true&w=majority",
-  "jwtSecret": "apptoken",
-  "githubClientId": "d3ad5d9da654ab60ff9f",
-  "githubSecret": "afe85c917e4a2ea6ee52fcba7dd874c5f1d182d6"
-}
