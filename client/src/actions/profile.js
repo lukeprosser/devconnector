@@ -23,6 +23,9 @@ export const getCurrentProfile = () => async (dispatch) => {
       payload: res.data,
     });
   } catch (err) {
+    // Remove profile in the event that newly registered user has previously viewed a profile (and it was loaded into state)
+    dispatch({ type: CLEAR_PROFILE });
+
     dispatch({
       type: PROFILE_ERROR,
       payload: { msg: err.response.statusText, status: err.response.status },
